@@ -100,8 +100,9 @@ public:
 		set <int> C;
 		N = getIntArg(argc, argv, 1, rand()%maxN);
 		cout << N << endl;
-		maxM = (1 << N)%(1 << 20); //Real maximum is 2^N, but topping at 2^20 for computational complexity.
+		maxM = (1 << N); //Maximum is 2^N
 		M = getIntArg(argc, argv, 2, rand()%maxM);
+		M %= (1 << 20); //Make M less than 2^20 to make computation fast
 		cout << M << endl;
 		for (int i = 0; i<M; i++){
 			C.insert(rand()%M);
