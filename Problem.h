@@ -16,10 +16,17 @@ class Problem {
 public:
 	virtual void readProblem() =0;
 	virtual double fitness(Gene x) =0;
-	virtual void generateRandomProblem(int maxN = 2048) =0;
+	virtual void generateRandomProblem(int argc, char* argv[], int maxN = 2048) {cout << name << endl;};
 	int geneSize;
 	string name;
 };
+
+int getIntArg(int argc, char* argv[], int argn, int defValue=0){
+	if(argc > argn)
+		return strtol(argv[argn], NULL, 10);
+	else
+		return defValue;
+}
 
 class GT1 : public Problem {
 public:
@@ -46,13 +53,15 @@ public:
 
 	GT1() { name = "GT1"; }
 
-	void generateRandomProblem(int maxN ) {
+	void generateRandomProblem(int argc, char* argv[], int maxN ) {
+		Problem::generateRandomProblem(argc, argv, maxN);
+		cout << name << endl;
 		int N, M, K;
-		N = rand()%maxN;
+		N = getIntArg(argc, argv, 1, rand()%maxN);
 		cout << N << endl;
-		M = rand()%(1+N*maxN);
+		M = getIntArg(argc, argv, 2, rand()%(1+N*maxN));
 		cout << M << endl;
-		K = rand()%N;
+		K = getIntArg(argc, argv, 3, rand()%N);
 		cout << K << endl;
 		for (int i = 0; i<M; i++){
 			edges.insert(make_pair(rand()%N, rand()%N));
@@ -85,16 +94,17 @@ public:
 
 	SP5() { name = "SP5"; }
 
-	void generateRandomProblem(int maxN ){
+	void generateRandomProblem(int argc, char* argv[], int maxN){
+		Problem::generateRandomProblem(argc, argv, maxN);
 		int N, M, maxM;
 		set <int> C;
-		N = rand()%maxN;
+		N = getIntArg(argc, argv, 1, rand()%maxN);
 		cout << N << endl;
-		maxM = (1 << (N - 2)); //Real maximum is 2^N, but truncating to 2^(N-2) for computational complexity.
-		M = rand()%maxM;
+		maxM = (1 << N)%(1 << 20); //Real maximum is 2^N, but topping at 2^20 for computational complexity.
+		M = getIntArg(argc, argv, 2, rand()%maxM);
 		cout << M << endl;
 		for (int i = 0; i<M; i++){
-			C.insert(rand()%maxM);
+			C.insert(rand()%M);
 		}
 		//Print out in order, without duplicates
 		for (auto const &it : C) {
