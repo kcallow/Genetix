@@ -1,5 +1,4 @@
 #include "Algorithm.h"
-<<<<<<< HEAD
 #include <fstream>
 
 int main(int argc, char* argv[]){
@@ -14,20 +13,11 @@ int main(int argc, char* argv[]){
 		return 1;
 	}
 
-=======
-
-int main(int argc, char* argv[]){
-	srand((unsigned)time(NULL));
-	string name;
-	//cout << "Nombre del problema:\t";
-	cin >> name;
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	Problem* problem = makeProblem(name);
 	if(problem == NULL){
 		cout << "Codigo de problema desconocido. Terminando...\n";
 		return -1;
 	}
-<<<<<<< HEAD
 	int argn = problem->generateRandomProblem(argc, argv, 2);
 
 	Algorithm algorithm;
@@ -52,10 +42,5 @@ int main(int argc, char* argv[]){
 		algorithm.writePopulation();
 	}
 
-=======
-	problem->generateRandomProblem(argc, argv);
-	problem->writeProblem();
-	delete problem;
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	return 0;
 }

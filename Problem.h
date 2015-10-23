@@ -5,7 +5,6 @@
 #include <vector>
 #include <valarray>
 #include <string>
-#include <string.h>
 #include <stdlib.h>
 
 using namespace std;
@@ -20,7 +19,7 @@ int factorial(int n) {
 	return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
 */
-typedef valarray<bool> Gene;
+typedef vector<bool> Gene;
 
 class Problem {
 public:
@@ -28,7 +27,6 @@ public:
 	virtual void writeProblem() {cout << name << endl;}
 	virtual int geneSize() =0;
 	virtual double fitness(Gene x) =0;
-<<<<<<< HEAD
 	//Either reads problem data from arguments, or generates them if not enough. Begin with argument number argn
 	virtual int generateRandomProblem(int argc = 0, char* argv[] = NULL, int argn=1, int maxN = 2048) =0;
 	virtual void printSolution(Gene x) =0;
@@ -39,17 +37,6 @@ int getIntArg(int argc, char* argv[], int& argn, int defValue=0){
 	//If enough arguments and numerical argument, return desired argument as int
 	if(argc > argn && isdigit(argv[argn][0])) 
 		return strtol(argv[argn++], NULL, 10);
-=======
-	//Either reads problem data from arguments, or generates them if not enough
-	virtual void generateRandomProblem(int argc = 0, char* argv[] = NULL, int maxN = 2048) =0;
-	string name;
-};
-
-int getIntArg(int argc, char* argv[], int argn, int defValue=0){
-	//If enough arguments, return desired argument as int
-	if(argc > argn) 
-		return strtol(argv[argn], NULL, 10);
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	//Else return the default value
 	else
 		return defValue;
@@ -82,18 +69,12 @@ public:
 		cout << "\tE = {\n";
 		int Vi, Vf;
 		for (int i = 0; i<M; i++){
-<<<<<<< HEAD
 			cout << "\t\tE" << i << " = ";
-=======
-			cout << "\t\t(";
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 			cin >> Vi;
 			cin >> Vf;
-			cout << "\t\t\t),\n";
 			edges.insert(make_pair(Vi, Vf));
 		}
 		cout << "\t}\n";
-<<<<<<< HEAD
 	}
 
 	void writeProblem() {
@@ -111,25 +92,6 @@ public:
 		return N;
 	}
 
-=======
-	}
-
-	void writeProblem() {
-		Problem::writeProblem();
-		cout << N << endl;
-		cout << M << endl;
-		cout << K << endl;
-		//Print out in order, without duplicates
-		for (auto const &it : edges) {
-			cout << it.first << " " << it.second << endl;
-		}
-	}
-
-	int geneSize(){
-		return N;
-	}
-
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	double fitness(Gene x) {
 		double result = 0;
 		for(const auto &edge : edges){
@@ -145,7 +107,6 @@ public:
 
 	GT1() { name = "GT1"; }
 
-<<<<<<< HEAD
 	int generateRandomProblem(int argc, char* argv[], int argn, int maxN ) {
 		N = getIntArg(argc, argv, argn, rand()%maxN);
 		M = getIntArg(argc, argv, argn, rand()%(1+N*maxN));
@@ -163,15 +124,6 @@ public:
 				cout << i << ", ";
 		}
 		cout << "}" <<endl;
-=======
-	void generateRandomProblem(int argc, char* argv[], int maxN ) {
-		N = getIntArg(argc, argv, 1, rand()%maxN);
-		M = getIntArg(argc, argv, 2, rand()%(1+N*maxN));
-		K = getIntArg(argc, argv, 3, rand()%N);
-		for (int i = 0; i<M; i++){
-			edges.insert(make_pair(rand()%N, rand()%N));
-		}
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	}
 };
 
@@ -200,24 +152,14 @@ Gene representation: There are M = |C| bits in each gene. Given a position p(i),
 		cin >> M;
 		cout << "\tRecubrimiento:\n\t\t";
 		cin >> K;
-<<<<<<< HEAD
 		cout << "\tC = {\n";
-=======
-		cout << "\tC = {";
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 
 		set<int> auxSet;
 		string s;
 		getline(cin,s); //Kill newline
 		for(int i = 0; i < M; i++) {
-<<<<<<< HEAD
 			cout << "\t\tC" << i << " = ";
 			addSetToC(s, auxSet);
-=======
-			cout << "\n\t\t{";
-			addSetToC(s, auxSet);
-			cout << "\t\t\t},\n";
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 		}
 		cout << "\t}\n";
 	}
@@ -239,7 +181,6 @@ Gene representation: There are M = |C| bits in each gene. Given a position p(i),
 	int geneSize(){
 		return M;
 	}
-<<<<<<< HEAD
 
 	SP5() { name = "SP5"; }
 
@@ -251,30 +192,6 @@ Gene representation: There are M = |C| bits in each gene. Given a position p(i),
 		M %= (1 << 20); //Make M less than 2^20 to make computation feasible
 
 		K = getIntArg(argc, argv, argn, rand()%M);
-=======
-
-	double fitness(Gene x) {
-		double result = 0;
-		for(int i = 0; i < N; i++){ //Iterate over S
-			if(intInGene(i, x))
-				result++;
-			else
-				result--;
-		}
-		return result/K;
-	}
-
-	SP5() { name = "SP5"; }
-
-	void generateRandomProblem(int argc, char* argv[], int maxN){
-		N = getIntArg(argc, argv, 1, rand()%maxN);
-
-		int maxM = (1 << N); //Maximum is 2^N
-		M = getIntArg(argc, argv, 2, rand()%maxM);
-		M %= (1 << 20); //Make M less than 2^20 to make computation feasible
-
-		K = getIntArg(argc, argv, 3, rand()%M);
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 
 		set<int> auxSet;
 		int jMax;
@@ -286,7 +203,6 @@ Gene representation: There are M = |C| bits in each gene. Given a position p(i),
 			C.push_back(auxSet);
 			auxSet.clear();
 		}
-<<<<<<< HEAD
 		return argn;
 	}
 
@@ -324,15 +240,6 @@ private:
 		for(int j = 0; j < M; j++){ //Iterate over gene
 			//If gene contains jth set in collection
 			//and jth set contains current int, true
-=======
-	}
-
-private:
-	bool intInGene(int i, Gene &x) {
-		for(int j = 0; j < M; j++){ //Iterate over gene
-			//If gene contains jth set in collection
-			//and contains current int, true
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 			if(x[j] && intInSet(i, C[j])) 
 				return true;
 		}
@@ -343,7 +250,6 @@ private:
 		for(int element : set){
 			if(i == element)
 				return true;
-<<<<<<< HEAD
 		}
 		return false;
 	}
@@ -359,23 +265,6 @@ private:
 			putToSet(s, auxSet);
 			s.erase(s.begin());
 		}
-=======
-		}
-		return false;
-	}
-
-	void addSetToC(string &s, set<int> &auxSet) {
-		getline(cin,s);
-		if(s == "") //Ignore empty lines
-			return;
-
-		putToSet(s, auxSet); 
-		while (s.find(" ") != string::npos){
-			s = s.substr(s.find(" "));
-			putToSet(s, auxSet);
-			s.erase(s.begin());
-		}
->>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 		C.push_back(auxSet);
 		auxSet.clear(); //Clear for next call to addSetToC
 	}
