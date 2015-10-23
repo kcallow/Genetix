@@ -1,5 +1,8 @@
 #include "Problem.h"
+<<<<<<< HEAD
 #include <map>
+=======
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 
 enum SelectPolicy { RANDOM, FORTUNE, TOURNAMENT };
 
@@ -10,6 +13,7 @@ public:
 	double mutation;
 	int popSize;
 	Problem* problem;
+<<<<<<< HEAD
 
 	void generation(){
 		calculateRanking();
@@ -33,6 +37,19 @@ public:
 	~Algorithm() {
 		delete problem;
 	}
+=======
+	void generacion(){}
+
+	Algorithm( SelectPolicy policy, int crosses, double mutation, int popSize, Problem* problem ){
+		this->policy = policy;
+		this->crosses = crosses;
+		this->mutation = mutation;
+		this->popSize = popSize;
+		this->problem = problem;
+	}
+
+	~Algorithm() { delete problem; }
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 
 	void resetPopulation(){
 		for(int i = 0; i < popSize; i++)
@@ -41,8 +58,15 @@ public:
 	}
 
 	void readPopulation(){
+<<<<<<< HEAD
 		popSize = 0;
 		while(getGene() && ++popSize);
+=======
+		for(int i = 0; i < popSize; i++){
+			cout << "\tGen: ";
+			getGene();
+		}
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	}
 
 	void writePopulation(){
@@ -50,6 +74,7 @@ public:
 			writeGene(population[i]);
 	}
 
+<<<<<<< HEAD
 	Gene getBest(int order = 1){ //By default get first best.
 		auto rankIterator = fitnessRanking.end();
 		while(order--)
@@ -62,10 +87,25 @@ public:
 		Gene best = getBest();
 		writeGene(best);
 		problem->printSolution(best);
+=======
+	Gene getBest(){
+		int maxFitness = problem->fitness(population[0]);
+		int best = 0;
+		int currentFitness;
+		for(int i = 1; i < popSize; i++){
+			currentFitness = problem->fitness(population[i]);
+			if(maxFitness < currentFitness){
+				maxFitness = currentFitness;
+				best = i;
+			}
+		}
+		return population[best];
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	}
 
 private:
 	vector<Gene> population;
+<<<<<<< HEAD
 	multimap<double, int> fitnessRanking;
 
 	pair<Gene&, Gene&> selectParents(){
@@ -119,6 +159,8 @@ private:
 	pair<Gene&, Gene&> makeChildren(pair<Gene&, Gene&> parents){
 		return pair<Gene&, Gene&>();
 	}
+=======
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 
 	void addRandomGene() {
 		int geneSize = problem->geneSize();
@@ -129,20 +171,30 @@ private:
 		population.push_back(newGene);
 	}
 
+<<<<<<< HEAD
 	bool getGene() {
 		cout << "\tGen: ";
+=======
+	void getGene() {
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 		int geneSize = problem->geneSize();
 		Gene newGene(geneSize);
 		string line;
 		getline(cin,line); 
+<<<<<<< HEAD
 		if(line == "")
 			return false;
+=======
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 		line.resize(geneSize, '0'); //Resize string to geneSize. Fill missing with 0's
 		for(int i = 0; i < geneSize; i++)
 			newGene[i] = line[i] - '0'; //Convert char to number
 
 		population.push_back(newGene);
+<<<<<<< HEAD
 		return true;
+=======
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 	}
 
 	void writeGene(Gene gene) {
@@ -152,6 +204,7 @@ private:
 		cout << endl;
 	}
 
+<<<<<<< HEAD
 	void calculateRanking(){
 		fitnessRanking.clear();
 		for(int i = 1; i < popSize; i++){
@@ -160,4 +213,6 @@ private:
 			fitnessRanking.emplace(currentFitness, i);
 		}
 	}
+=======
+>>>>>>> f6652b565840290a773db0909965c8d09ba75b03
 };
